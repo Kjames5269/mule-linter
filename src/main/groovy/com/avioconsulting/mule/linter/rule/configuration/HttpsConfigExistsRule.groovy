@@ -49,8 +49,10 @@ class HttpsConfigExistsRule extends Rule {
                                                     it.lineNumber, RULE_VIOLATION_MESSAGE))
                                             }
                                         } else {
-                                            violations.add(new RuleViolation(this, it.file.path,
-                                                    it.lineNumber, RULE_VIOLATION_MESSAGE))
+                                            if(it.attributes.get("tlsContext") == null) {
+                                                violations.add(new RuleViolation(this, it.file.path,
+                                                        it.lineNumber, RULE_VIOLATION_MESSAGE))
+                                            }
                                         }
                                     }
                                 }

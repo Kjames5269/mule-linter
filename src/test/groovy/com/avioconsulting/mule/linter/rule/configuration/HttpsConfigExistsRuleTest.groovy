@@ -5,7 +5,6 @@ import com.avioconsulting.mule.linter.model.Application
 import com.avioconsulting.mule.linter.model.rule.Rule
 import com.avioconsulting.mule.linter.model.rule.RuleSeverity
 import com.avioconsulting.mule.linter.model.rule.RuleViolation
-import com.avioconsulting.mule.linter.rule.readme.HttpsConfigExistsRule
 import spock.lang.Specification
 
 @SuppressWarnings(['MethodName', 'MethodReturnTypeRequired', 'GStringExpressionWithinString',
@@ -23,6 +22,18 @@ class HttpsConfigExistsRuleTest extends Specification {
 
     def cleanup() {
         testApp.remove()
+    }
+
+    def 'Test App Live Config Test'() {
+        given:
+        Rule rule = new HttpsConfigExistsRule()
+
+        when:
+        Application app = new Application(testApp.appDir)
+        List<RuleViolation> violations = rule.execute(app)
+
+        then:
+        violations.size() == 0
     }
 
     def '1 HTTPS configurations with no TLS configuration'() {
