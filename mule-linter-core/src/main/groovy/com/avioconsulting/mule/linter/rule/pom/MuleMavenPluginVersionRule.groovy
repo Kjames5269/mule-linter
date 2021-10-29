@@ -9,9 +9,10 @@ class MuleMavenPluginVersionRule extends PomPluginAttributeRule {
     static final String RULE_NAME = 'The mule maven plugin is a valid version. '
     static final String GROUP_ID = 'org.mule.tools.maven'
     static final String ARTIFACT_ID = 'mule-maven-plugin'
-
+    String version;
     MuleMavenPluginVersionRule(String version) {
         super(RULE_ID, RULE_NAME, GROUP_ID, ARTIFACT_ID, ['version':version])
+        this.version = version
     }
 
     @Override

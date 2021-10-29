@@ -9,6 +9,7 @@ dependencies {
     testImplementation 'org.spockframework:spock-core'
     implementation 'org.json:json:20171018'
     implementation 'org.yaml:snakeyaml:1.29'
+    implementation 'org.reflections:reflections:0.10.2'
 }
 
 test {
