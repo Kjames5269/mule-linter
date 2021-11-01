@@ -19,6 +19,18 @@ abstract class Rule {
         this(ruleId, ruleName, RuleSeverity.CRITICAL, RuleType.CODE_SMELL)
     }
 
+    /**
+     * All rule classes should implement this method to return a fully configurable instance of the Rule.
+     * Groovy DSL depends on this method to acquire fully configurable and executable.
+     * Default implementation will instantiate rule using default constructor, if available.
+     * For any non-default constructor based rules, those classes should implement this method and provide
+     * instance using provided params.
+     * @return
+     */
+    static def Rule createRule(Class<? extends Rule> ruleClass, Map<String, Object> params) {
+        return ruleClass.newInstance()
+    }
+
     String getRuleName() {
         return ruleName
     }

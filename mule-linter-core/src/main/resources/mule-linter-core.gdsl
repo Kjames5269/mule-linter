@@ -1,0 +1,17 @@
+
+
+def linterCtx = context(scriptScope: 'muleLinter.groovy')
+contributor([linterCtx]) {
+    method name: 'mule_Linter',
+        params: [
+                closure: Closure.name
+        ]
+}
+
+def rulesCtx = context(ctype: 'com.avioconsulting.mule.linter.dsl.RulesContext')
+contributor([rulesCtx]) {
+        method name: 'MUNIT_VERSION',
+            params: [
+                    closure: Closure.class
+            ]
+}

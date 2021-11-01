@@ -1,10 +1,10 @@
 
-mule_linter {
+muleLinter {
     rules {
-        JENKINS_EXISTS
-        GIT_IGNORE
+        JENKINS_EXISTS {}
+        GIT_IGNORE {}
         MUNIT_VERSION {
-            version= '3.3.50'
+            version = '3.3.50'
         }
 //        //This argument order must match with constructor param order. Too technical.
 //        COMPONENT_COUNT {

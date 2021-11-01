@@ -1,20 +1,13 @@
 package com.avioconsulting.mule
 
-import com.avioconsulting.mule.linter.dsl.Dsl
-import com.avioconsulting.mule.linter.dsl.MuleLinterDsl
+import com.avioconsulting.mule.linter.dsl.MuleLinterContext
+import com.avioconsulting.mule.linter.dsl.MuleLinterScript
 import com.avioconsulting.mule.linter.model.Application
 import com.avioconsulting.mule.linter.model.MuleApplication
 import com.avioconsulting.mule.linter.model.ReportFormat
-import com.avioconsulting.mule.linter.model.rule.Rule
 import com.avioconsulting.mule.linter.model.rule.RuleExecutor
 import com.avioconsulting.mule.linter.model.rule.RuleSet
 import org.codehaus.groovy.control.CompilerConfiguration
-import org.reflections.ReflectionUtils
-import org.reflections.Reflections
-import org.reflections.scanners.Scanners
-import org.reflections.util.ClasspathHelper
-import org.reflections.util.ConfigurationBuilder
-import org.reflections.util.FilterBuilder
 
 @SuppressWarnings(['All', 'GStringExpressionWithinString'])
 class MuleLinter {
@@ -25,10 +18,30 @@ class MuleLinter {
 
     MuleLinter(File applicationDirectory, File ruleConfigFile, ReportFormat outputFormat) {
         this.app = new MuleApplication(applicationDirectory)
-        ruleSetList = parseConfigurationFile(ruleConfigFile)
+        ruleSetList = processDSL(ruleConfigFile)
+
         this.outputFormat= outputFormat
     }
 
+    List<RuleSet> processDSL(File ruleConfigFile){
+
+        def compilerConfig = new CompilerConfiguration().with {
+            scriptBaseClass = MuleLinterScript.name
+            it
+        }
+        def binding = new Binding()
+        binding.setVariable('params',[:])
+
+
+        def shell = new GroovyShell(
+                this.class.classLoader,
+                binding,
+                compilerConfig
+        )
+        MuleLinterContext linterContext = shell.evaluate(ruleConfigFile) as MuleLinterContext
+        return [linterContext.rulesContext.ruleSet]
+
+    }
     List<RuleSet> parseConfigurationFile(File ruleConfigFile) {
         GroovyClassLoader gcl = new GroovyClassLoader()
         Class dynamicRules = gcl.parseClass(ruleConfigFile)
