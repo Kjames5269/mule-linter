@@ -12,7 +12,7 @@ class RulesLoader {
         //This loads all Rule classes shipped with core.
         //TODO: Find a way to load all classes from external library that can have different package.
         Reflections rf = new Reflections(new ConfigurationBuilder()
-                .forPackages("com.avioconsulting")
+                .forPackages("com.", "org.", "io.")
                 .setExpandSuperTypes(false)
                 .addScanners(Scanners.values()))
         def rules = rf.getSubTypesOf(Rule.class)

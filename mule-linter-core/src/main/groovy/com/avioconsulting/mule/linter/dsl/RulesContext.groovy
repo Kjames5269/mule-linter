@@ -16,7 +16,7 @@ class RulesContext extends BaseContext {
         def ruleClass = RulesLoader.getRuleClassById(name)
         def rule;
         if(ruleClass != null) {
-            def ruleObj = new HashMap()
+            def ruleObj = new LinkedHashMap()
             println "Creating rule " + name
             if(args != null && args.length > 0 ){
                 Closure cl = args[0]
